@@ -7,7 +7,7 @@ import {Image} from '../../models/Image';
 @Injectable({
   providedIn: 'root'
 })
-export class ImageServiceService {
+export class ImageService {
 
   constructor(private httpClient: HttpClient, private alertService: AlertService) { }
 
