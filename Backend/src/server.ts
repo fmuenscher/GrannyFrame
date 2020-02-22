@@ -37,3 +37,27 @@ let mongo_port = process.env.MONGO_PORT || 27017;
 let production: boolean = JSON.parse((process.env.PRODUCTION || 'false'));
 
 let server = http.createServer(app);
+
+server.listen(port, async () => {
+    console.log(`
+        -------------------------------------------------------------
+        Server started: https://${host}:${port}
+        Database Config: mongodb://${mongo_host}:${mongo_port}
+        Google Callback URL: ${process.env.G_CLIENT_CALLBACKURL}
+        -------------------------------------------------------------
+    `);
+    // Start up database connection
+    try {
+        // Use connect method to connect to the Server
+        client = await MongoClient.connect(`mongodb://${mongo_host}:${mongo_port}`, {
+            useUnifiedTopology: true
+        });
+        database = client.db("drawio");
+        userlist = database.collection<User>("userlist");
+        imagelist = database.collection<Drawing>("imagelist");
+        logins = database.collection<{ user: User, date: Date }>("logins");
+        console.log("Database is connected ...\n");
+    } catch (err) {
+        console.error("Error connecting to database ...\n" + err);
+    }
+});
