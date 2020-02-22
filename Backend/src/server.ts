@@ -13,6 +13,7 @@ import {
     ObjectID,
     UpdateWriteOpResult
 } from "mongodb";
+import {Image} from "./models/Image";
 
 /*****************************************************************************
  * Define app and database connection                                        *
@@ -20,6 +21,8 @@ import {
 const app = express();
 let client: MongoClient;
 let database: Db;
+
+let imageList: Collection<Image>;
 
 /*****************************************************************************
  * Configure web-app                                                         *
@@ -53,11 +56,62 @@ server.listen(port, async () => {
             useUnifiedTopology: true
         });
         database = client.db("drawio");
-        userlist = database.collection<User>("userlist");
-        imagelist = database.collection<Drawing>("imagelist");
-        logins = database.collection<{ user: User, date: Date }>("logins");
+        imageList = database.collection<Image>("imageList");
         console.log("Database is connected ...\n");
     } catch (err) {
         console.error("Error connecting to database ...\n" + err);
+    }
+});
+
+/*****************************************************************************
+ * HTTP ROUTES                                                               *
+ *****************************************************************************/
+app.get('/images/:start/:limit', async (req: Request, res: Response) => {
+    const start: number = Number(req.params.start);
+    const limit: number = Number(req.params.limit);
+    // Create database query and data
+    const query: Object = {};
+
+    // request images from database
+    try {
+        let localImageList: Image[];
+        localImageList = await localImageList.find(query, {}).skip(start).limit(limit).sort({_id: -1}).toArray();
+        let idList: string[] = [];
+        localImageList.forEach(image => {
+            idList.push(image["_id"])
+        });
+        // Send image list to client
+        res.status(200).send({
+            message: 'Successfully requested image list',
+            idList: idList
+        });
+    } catch (err) {
+        // Database operation has failed
+        res.status(500).send({
+            message: 'Database request failed: ' + err,
+        });
+    }
+});
+
+app.get('/image/:id', async (req: Request, res: Response) => {
+    // Create database query and data
+    const id: string = req.params.id;
+    const query: Object = {_id: new ObjectID(id)};
+
+    // request image from database
+    try {
+        let image: Image = await imageList.findOne(query);
+        image.id = image["_id"];
+        delete image["_id"];
+        // Send image to client
+        res.status(200).send({
+            message: 'Successfully requested image by id: ' + id,
+            image: image
+        });
+    } catch (err) {
+        // Database operation has failed
+        res.status(500).send({
+            message: 'Database request failed: ' + err,
+        });
     }
 });
