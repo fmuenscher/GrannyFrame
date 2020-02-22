@@ -1,6 +1,6 @@
 export class Image {
     public id: string;
-    public username: string
+    public username: string;
     public prename: string;
     public lastname: string;
     public date: Date;

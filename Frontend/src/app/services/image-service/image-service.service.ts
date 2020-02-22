@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
-import {AlertService} from '../alertService/alert.service';
+import {AlertService} from '../alert-service/alert.service';
 import {Image} from '../../models/Image';
 
 @Injectable({
