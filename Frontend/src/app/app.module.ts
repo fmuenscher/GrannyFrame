@@ -6,6 +6,9 @@ import { AppComponent } from './app.component';
 import {AlertsComponent} from './alerts/alerts.component';
 import { ImageViewComponent } from './image-view/image-view.component';
 
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {HttpClientModule} from '@angular/common/http';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -14,7 +17,9 @@ import { ImageViewComponent } from './image-view/image-view.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

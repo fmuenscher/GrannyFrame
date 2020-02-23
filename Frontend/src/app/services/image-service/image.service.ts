@@ -33,4 +33,12 @@ export class ImageService {
       });
     });
   }
+
+  getTestImage(): Promise<Image>{
+    return new Promise<Image>((resolve, reject) => {
+      const b64Data = '/* TEST DATA GOES HERE */';
+      const image = new Image('Kentravyon', 'Felix', 'Münscher', new Date(), 'We two ❤', b64Data);
+      resolve(image);
+    });
+  }
 }

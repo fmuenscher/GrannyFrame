@@ -1,1 +1,6 @@
-<p>image-view works!</p>
+<div class="image-container">
+  <img class="main-img" [src]="this.domSanitizer.bypassSecurityTrustUrl(image.b64Data)" alt="Fehler beim anzeigen des Bildes">
+  <div class="image-info-panel">
+    {{image.prename}} {{image.lastname}} am {{image.date.toLocaleDateString()}}: {{image.caption}}
+  </div>
+</div>

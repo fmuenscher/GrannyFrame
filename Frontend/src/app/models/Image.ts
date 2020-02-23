@@ -8,8 +8,7 @@ export class Image {
     public b64Data: string;
 
 
-    constructor(id: string, username: string, prename: string, lastname: string, date: Date, caption: string, b64Data: string) {
-        this.id = id;
+    constructor(username: string, prename: string, lastname: string, date: Date, caption: string, b64Data: string) {
         this.username = username;
         this.prename = prename;
         this.lastname = lastname;
